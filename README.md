@@ -1,0 +1,2 @@
+# SSG
+Simple SSG
