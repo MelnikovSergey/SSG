@@ -1,3 +1,16 @@
+<?php
+
+$dir = __DIR__ . '/files';
+
+if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["saveFile"])) {
+
+	$filename = isset($_POST["file"]) ? $_POST["file"] : 'NULL';
+	$content = isset($_POST["content"]) ? $_POST["content"] : 'NULL';
+	$file = fopen($dir . DIRECTORY_SEPARATOR . $filename . '.md', 'r');
+	$filename;
+	$content;
+}
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -21,17 +34,17 @@
 	<main>
 		<h3>Markdown Editor</h3>
 
-		<form>
+		<form method="POST">
 			<input type="text" name="file" autocomplete="off">
 			<textarea cols="50" rows="15" name="content"></textarea>
-			<button type="submit" name="save_file">Сохранить</button>
+			<button type="submit" name="saveFile">РЎРѕС…СЂР°РЅРёС‚СЊ</button>
 		</form>
 	</main>
 
 	<footer class="main-footer">
 		<div class="container clearfix">
 			<span class="copyright">
-				<span class="copyright-declaration">© 2022 polytechnix.ru</span>
+				<span class="copyright-declaration">В© 2022 polytechnix.ru</span>
 				<span class="copyright-declaration">All Rights Reserved.</span>
 			</span>
 		</div>
