@@ -2,13 +2,28 @@
 
 $dir = __DIR__ . '/files';
 
+function get_files_listing($dir) {
+	$files = [];
+	if(is_dir($dir)) {
+		if($directory_name = opendir($dir)) {
+			while(($file = readdir($directory_name) !== false) {
+				if(in_array($file,['.','..'])) {
+					$files[] = $file;
+				}
+			}
+			closedir($directory_name);
+		}
+	}
+	return $files;
+}
+
 if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["saveFile"])) {
 
 	$filename = isset($_POST["file"]) ? $_POST["file"] : 'NULL';
 	$content = isset($_POST["content"]) ? $_POST["content"] : 'NULL';
 	$file = fopen($dir . DIRECTORY_SEPARATOR . $filename . '.md', 'r');
-	$filename;
-	$content;
+	$fwrite($file, $content);
+	$fclose($file);
 }
 
 <!DOCTYPE html>
@@ -21,8 +36,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["saveFile"])) {
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="format-detection" content="telephone=no">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&amp;subset=cyrillic">
- 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&amp;subset=cyrillic"> 
+	<link rel="stylesheet" href="css/reset.css"> 	
 	<link rel="stylesheet" href="css/styles.css">
 	<link rel="icon" type="image/x-icon" href="images/favicons/favicon.ico">	
 </head>
@@ -36,8 +51,14 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["saveFile"])) {
 
 		<form method="POST">
 			<input type="text" name="file" autocomplete="off">
+			<select> 
+				<option>--Select a file--<option>
+				<?php foreach(get_files_listing($dir) as $file): ?>
+					<option><?= $file; ?><option>
+				<?php endforeach; ?>
+			</select>
 			<textarea cols="50" rows="15" name="content"></textarea>
-			<button type="submit" name="saveFile">РЎРѕС…СЂР°РЅРёС‚СЊ</button>
+			<button type="submit" name="saveFile">Save</button>
 		</form>
 	</main>
 
